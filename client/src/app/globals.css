@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+
+@theme {
+  --color-brand-navy: #0A1628;
+  --color-brand-gold: #C9A84C;
+  --color-brand-jet: #0D0D0D;
+  --color-brand-sand: #F5F0E8;
+  
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+}
+
+:root {
+  --background: #F5F0E8; /* Brand Off-White */
+  --foreground: #0D0D0D; /* Brand Jet Black */
+  
+  --navy: #0A1628;
+  --gold: #C9A84C;
+  --jet: #0D0D0D;
+  --sand: #F5F0E8;
+}
+
+body {
+  background-color: var(--sand);
+  color: var(--jet);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A1628;
+}
+::-webkit-scrollbar-thumb {
+  background: #C9A84C;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b8973b;
+}
+
+/* Luxury card shadow and border style */
+.luxury-card {
+  background: #ffffff;
+  border: 1px solid rgba(10, 22, 40, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.luxury-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(10, 22, 40, 0.08);
+  border-color: rgba(201, 168, 76, 0.3);
+}
+
+/* Gold button utility */
+.btn-gold {
+  background: linear-gradient(135deg, #C9A84C 0%, #b8973b 100%);
+  color: #0d0d0d;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid #C9A84C;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-gold:hover {
+  background: transparent;
+  color: #C9A84C;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.25);
+}
+
+/* Navy button utility */
+.btn-navy {
+  background: #0A1628;
+  color: #F5F0E8;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid #0A1628;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-navy:hover {
+  background: transparent;
+  color: #0A1628;
+  box-shadow: 0 4px 20px rgba(10, 22, 40, 0.15);
+}
+
+/* Glassmorphism utility */
+.glass-nav {
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+/* Shimmer animations for image skeleton loaders */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
