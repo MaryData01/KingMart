@@ -1,7 +1,10 @@
+```javascript
 import axios from 'axios';
 
+const API_URL = 'https://kingmart-backend.onrender.com/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -34,7 +37,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
+
     if (
       error.response &&
       error.response.status === 401 &&
@@ -43,49 +46,65 @@ api.interceptors.response.use(
       !originalRequest.url.includes('/auth/login')
     ) {
       originalRequest._retry = true;
+
       try {
         if (typeof window !== 'undefined') {
           const user = localStorage.getItem('kingsmart_user');
+
           if (user) {
             const parsed = JSON.parse(user);
+
             if (parsed.refreshToken) {
               console.log('Access token expired. Refreshing token...');
-              
-              const { data } = await axios.post('http://localhost:5000/api/auth/refresh', {
-                refreshToken: parsed.refreshToken
-              });
-              
+
+              const { data } = await axios.post(
+                `${API_URL}/auth/refresh`,
+                {
+                  refreshToken: parsed.refreshToken
+                }
+              );
+
               const token = data.accessToken || data.token;
+
               if (token) {
-                // Update local storage user profile with new access token
                 parsed.accessToken = token;
                 parsed.token = token;
-                localStorage.setItem('kingsmart_user', JSON.stringify(parsed));
-                
-                // Retry the original request with the new access token
+
+                localStorage.setItem(
+                  'kingsmart_user',
+                  JSON.stringify(parsed)
+                );
+
                 originalRequest.headers.Authorization = `Bearer ${token}`;
+
                 return api(originalRequest);
               }
             }
           }
         }
       } catch (refreshErr) {
-        console.error('Token refresh cycle failed. Forcing logout...', refreshErr);
+        console.error(
+          'Token refresh cycle failed. Forcing logout...',
+          refreshErr
+        );
+
         if (typeof window !== 'undefined') {
           localStorage.removeItem('kingsmart_user');
-          // Redirect to login page
           window.location.href = '/login?expired=true';
         }
       }
     }
-    
-    // Normalize and return standard error format
-    const errorMessage = 
-      error.response && error.response.data && error.response.data.message
+
+    const errorMessage =
+      error.response &&
+      error.response.data &&
+      error.response.data.message
         ? error.response.data.message
         : error.message || 'An unexpected API error occurred.';
+
     return Promise.reject(new Error(errorMessage));
   }
 );
 
 export default api;
+```
